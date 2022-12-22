@@ -1,4 +1,4 @@
-import {Appearance, StyleSheet, ViewStyle} from 'react-native'
+import {Appearance, StyleSheet} from 'react-native'
 import {Colors} from 'react-native/Libraries/NewAppScreen'
 
 const isDarkMode = Appearance.getColorScheme() === 'dark'
@@ -39,13 +39,13 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: isDarkMode ? Colors.black : Colors.white,
   },
-  vibrationSwitch: {
+  switchView: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-end',
   },
-  tapFeedbackButton: {
+  switchButton: {
     marginRight: 10,
     color: isDarkMode ? Colors.white : Colors.black,
   },
