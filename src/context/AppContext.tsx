@@ -12,12 +12,12 @@ interface IContext {
 
 export const initialState: IContext = {
   isGameStarted: false,
-  isEndless: false,
-  isSizeChange: false,
   startGame: () => {},
   stopGame: () => {},
   setIsEndless: () => {},
+  isEndless: false,
   setIsSizeChange: () => {},
+  isSizeChange: false,
 }
 
 export const AppContext = createContext(initialState)

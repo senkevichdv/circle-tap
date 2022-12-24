@@ -24,10 +24,15 @@ const styles = StyleSheet.create({
     margin: 10,
     color: isDarkMode ? Colors.white : Colors.black,
   },
-  scoreText: {
-    color: isDarkMode ? Colors.white : Colors.black,
+  statsContainer: {
     position: 'absolute',
     bottom: 0,
+  },
+  scoreText: {
+    textAlign: 'center',
+    marginBottom: 5,
+    position: 'relative',
+    color: isDarkMode ? Colors.white : Colors.black,
   },
   escButton: {
     fontSize: 22,

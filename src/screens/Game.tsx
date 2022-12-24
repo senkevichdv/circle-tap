@@ -22,6 +22,9 @@ const Game = () => {
     React.useContext(AppContext)
   const {height, width} = useWindowDimensions()
   const [score, setScore] = useState<number>(0)
+  const [gameTime, setGameTime] = useState<number>(0)
+  const [gameTimerId, setGameTimerId] = useState<number>(0)
+  const [averageTapTime, setAverageTapTime] = useState<number>(0)
   const [timerId, setTimerId] = useState<number>(0)
   const [level, setLevel] = useState<number>(1)
   const [circleWidth, setCircleWidth] = useState<number>(100)
@@ -42,19 +45,18 @@ const Game = () => {
 
   const start = useCallback(() => {
     startGame()
+    setGameTime(1)
     centerCircle()
     setScore(0)
     if (!isEndless) {
       const timer = setTimeout(stopGame, GAME_TIME)
       setTimerId(timer)
     }
+    const id = setInterval(() => {
+      setGameTime(t => t + 1)
+    }, 1000)
+    setGameTimerId(id)
   }, [centerCircle, isEndless, startGame, stopGame])
-
-  const stop = useCallback(() => {
-    stopGame()
-    setCircleWidth(100)
-    setLevel(1)
-  }, [stopGame])
 
   useEffect(() => {
     setLevel(Math.ceil(score / 5))
@@ -72,9 +74,9 @@ const Game = () => {
 
   useEffect(() => {
     if (circleWidth < 3) {
-      stop()
+      stopGame()
     }
-  }, [circleWidth, stop])
+  }, [circleWidth, stopGame])
 
   const onCircleClickHandler = useCallback(() => {
     offsetTop.value = randomTopValue
@@ -100,13 +102,18 @@ const Game = () => {
     if (!isGameStarted) {
       if (score > 0) {
         Alert.alert('Your score is: ' + score, '', [{text: 'Close'}])
+        setAverageTapTime(score / gameTime)
       }
       if (timerId) {
         clearTimeout(timerId)
       }
+      if (gameTimerId) {
+        clearInterval(gameTimerId)
+      }
       setCircleWidth(100)
+      setLevel(1)
     }
-  }, [isGameStarted, score, timerId])
+  }, [gameTime, gameTimerId, isGameStarted, score, timerId])
 
   return (
     <SafeAreaView style={styles.background}>
@@ -120,7 +127,13 @@ const Game = () => {
           <Text onPress={start} style={styles.startButton}>
             Start
           </Text>
-          <Text style={styles.scoreText}>Last score: {score}</Text>
+          <View style={styles.statsContainer}>
+            <Text style={styles.scoreText}>Last score: {score}</Text>
+            <Text style={styles.scoreText}>
+              Average tap time: {averageTapTime.toPrecision(2)}s
+            </Text>
+            <Text style={styles.scoreText}>Game time: {gameTime}</Text>
+          </View>
         </View>
       )}
     </SafeAreaView>

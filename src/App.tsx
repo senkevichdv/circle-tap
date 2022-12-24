@@ -35,7 +35,7 @@ const App = () => {
             component={Game}
             options={({navigation}) => ({
               headerShadowVisible: false,
-              headerTintColor: '#fff',
+              headerTintColor: isDarkMode ? Colors.black : Colors.white,
               headerStyle: {
                 backgroundColor: isDarkMode ? Colors.black : Colors.white,
               },
@@ -61,7 +61,7 @@ const App = () => {
           <Stack.Screen
             name="Settings"
             options={() => ({
-              headerTintColor: '#fff',
+              headerTintColor: isDarkMode ? Colors.white : Colors.black,
               headerShadowVisible: false,
               headerStyle: {
                 backgroundColor: isDarkMode ? Colors.black : Colors.white,
