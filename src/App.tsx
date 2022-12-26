@@ -2,14 +2,14 @@ import React, {useState} from 'react'
 import 'react-native-gesture-handler'
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
+import {Button} from 'react-native'
+
 import {AppContext} from './context/AppContext'
 import Game from './screens/Game'
 import Settings from './screens/Settings'
-import {Appearance, Button} from 'react-native'
-import {Colors} from 'react-native/Libraries/NewAppScreen'
+import shared from './styles/shared'
 
 const Stack = createStackNavigator()
-const isDarkMode = Appearance.getColorScheme() === 'dark'
 
 const App = () => {
   const [isGameStarted, setIsGameStarted] = useState(false)
@@ -35,36 +35,32 @@ const App = () => {
             component={Game}
             options={({navigation}) => ({
               headerShadowVisible: false,
-              headerTintColor: isDarkMode ? Colors.black : Colors.white,
+              headerTintColor: shared.invertedColor,
               headerStyle: {
-                backgroundColor: isDarkMode ? Colors.black : Colors.white,
+                backgroundColor: shared.invertedColor,
               },
               title: '',
               headerRight: () =>
                 !isGameStarted ? (
                   <Button
-                    color={isDarkMode ? Colors.white : Colors.black}
+                    color={shared.color}
                     onPress={() => navigation.navigate('Settings')}
                     title="Settings"
                   />
                 ) : null,
               headerLeft: () =>
                 isGameStarted && isEndless ? (
-                  <Button
-                    color={isDarkMode ? Colors.white : Colors.black}
-                    onPress={stopGame}
-                    title="✕"
-                  />
+                  <Button color={shared.color} onPress={stopGame} title="✕" />
                 ) : null,
             })}
           />
           <Stack.Screen
             name="Settings"
             options={() => ({
-              headerTintColor: isDarkMode ? Colors.white : Colors.black,
+              headerTintColor: shared.color,
               headerShadowVisible: false,
               headerStyle: {
-                backgroundColor: isDarkMode ? Colors.black : Colors.white,
+                backgroundColor: shared.invertedColor,
               },
             })}
             component={Settings}

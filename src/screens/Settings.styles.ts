@@ -1,11 +1,9 @@
-import {Appearance, StyleSheet} from 'react-native'
-import {Colors} from 'react-native/Libraries/NewAppScreen'
-import appStyles from '../app.styles'
+import {StyleSheet} from 'react-native'
 
-const isDarkMode = Appearance.getColorScheme() === 'dark'
+import shared from '../styles/shared'
 
 const styles = StyleSheet.create({
-  background: appStyles.background,
+  background: shared.background,
   settingsContainer: {
     padding: 20,
   },
@@ -17,10 +15,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingBottom: 10,
     borderBottomWidth: 1,
-    borderBottomColor: isDarkMode ? Colors.white : Colors.black,
+    borderBottomColor: shared.color,
   },
   switchText: {
-    color: isDarkMode ? Colors.white : Colors.black,
+    color: shared.color,
     marginRight: 10,
     fontSize: 16,
   },

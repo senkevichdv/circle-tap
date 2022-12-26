@@ -12,8 +12,9 @@ import {
   Alert,
 } from 'react-native'
 
-import styles from '../app.styles'
 import {AppContext} from '../context/AppContext'
+
+import styles from './Game.styles'
 
 const GAME_TIME = 10000
 
@@ -29,19 +30,15 @@ const Game = () => {
   const [level, setLevel] = useState<number>(1)
   const [circleWidth, setCircleWidth] = useState<number>(100)
 
-  const isLandscape = height < width
-  const heightOffset = isLandscape ? 100 : 200
-  const widthOffset = isLandscape ? 200 : 100
-
-  const randomTopValue = Math.floor(Math.random() * (height - heightOffset))
-  const randomLeftValue = Math.floor(Math.random() * (width - widthOffset))
+  const randomTopValue = Math.floor(Math.random() * (height - 200))
+  const randomLeftValue = Math.floor(Math.random() * (width - 100))
   const offsetTop = useSharedValue(randomTopValue)
   const offsetLeft = useSharedValue(randomLeftValue)
 
   const centerCircle = useCallback(() => {
-    offsetTop.value = (height - heightOffset) / 2
-    offsetLeft.value = (width - widthOffset) / 2
-  }, [height, heightOffset, offsetLeft, offsetTop, width, widthOffset])
+    offsetTop.value = (height - 200) / 2
+    offsetLeft.value = (width - 100) / 2
+  }, [height, offsetLeft, offsetTop, width])
 
   const start = useCallback(() => {
     startGame()
@@ -130,7 +127,7 @@ const Game = () => {
           <View style={styles.statsContainer}>
             <Text style={styles.scoreText}>Last score: {score}</Text>
             <Text style={styles.scoreText}>
-              Average tap time: {averageTapTime.toPrecision(2)}s
+              Average tap time: {averageTapTime.toPrecision(2)} tap/s
             </Text>
             <Text style={styles.scoreText}>Game time: {gameTime}</Text>
           </View>

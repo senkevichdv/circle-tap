@@ -1,8 +1,9 @@
 import React from 'react'
 import {SafeAreaView, Text, View, Switch} from 'react-native'
 
-import styles from './Settings.styles'
 import {AppContext} from '../context/AppContext'
+
+import styles from './Settings.styles'
 
 const Settings = () => {
   const {setIsEndless, isEndless, setIsSizeChange, isSizeChange} =
