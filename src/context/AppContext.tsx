@@ -15,9 +15,9 @@ export const initialState: IContext = {
   startGame: () => {},
   stopGame: () => {},
   setIsEndless: () => {},
-  isEndless: false,
+  isEndless: true,
   setIsSizeChange: () => {},
-  isSizeChange: false,
+  isSizeChange: true,
 }
 
 export const AppContext = createContext(initialState)

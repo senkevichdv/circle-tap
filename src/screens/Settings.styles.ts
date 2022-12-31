@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   settingsContainer: {
     padding: 20,
   },
-  switchContainer: {
+  sectionContainer: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -17,10 +17,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: shared.color,
   },
-  switchText: {
+  sectionText: {
     color: shared.color,
     marginRight: 10,
     fontSize: 16,
+  },
+  sectionTitle: {
+    textAlign: 'center',
+    color: shared.color,
+    fontSize: 20,
+    padding: 20,
   },
 })
 

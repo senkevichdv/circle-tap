@@ -1,9 +1,15 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import Animated, {
+  // useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated'
+import {
+  Gesture,
+  GestureDetector,
+  // TapGestureHandler,
+} from 'react-native-gesture-handler'
 import {
   SafeAreaView,
   Text,
@@ -13,6 +19,7 @@ import {
 } from 'react-native'
 
 import {AppContext} from '../context/AppContext'
+import {useRealm} from '../realm'
 
 import styles from './Game.styles'
 
@@ -29,11 +36,11 @@ const Game = () => {
   const [timerId, setTimerId] = useState<number>(0)
   const [level, setLevel] = useState<number>(1)
   const [circleWidth, setCircleWidth] = useState<number>(100)
+  const realm = useRealm()
 
-  const randomTopValue = Math.floor(Math.random() * (height - 200))
-  const randomLeftValue = Math.floor(Math.random() * (width - 100))
-  const offsetTop = useSharedValue(randomTopValue)
-  const offsetLeft = useSharedValue(randomLeftValue)
+  const offsetTop = useSharedValue(Math.floor(Math.random() * (height - 200)))
+  const offsetLeft = useSharedValue(Math.floor(Math.random() * (width - 100)))
+  const pressed = useSharedValue(false)
 
   const centerCircle = useCallback(() => {
     offsetTop.value = (height - 200) / 2
@@ -75,12 +82,10 @@ const Game = () => {
     }
   }, [circleWidth, stopGame])
 
-  const onCircleClickHandler = useCallback(() => {
-    offsetTop.value = randomTopValue
-    offsetLeft.value = randomLeftValue
+  const onTouchHandler = useCallback(() => {
     setScore(newScore => newScore + 1)
     setCircleWidth(100)
-  }, [offsetLeft, offsetTop, randomLeftValue, randomTopValue])
+  }, [])
 
   const animatedStyles = useAnimatedStyle(() => ({
     transform: [
@@ -89,6 +94,9 @@ const Game = () => {
       },
       {
         translateY: withSpring(offsetTop.value),
+      },
+      {
+        scale: withSpring(pressed.value ? 1.5 : 1),
       },
     ],
     width: withSpring(circleWidth),
@@ -100,6 +108,14 @@ const Game = () => {
       if (score > 0) {
         Alert.alert('Your score is: ' + score, '', [{text: 'Close'}])
         setAverageTapTime(score / gameTime)
+        realm.write(() => {
+          realm.create('Score', {
+            score,
+            gameTime,
+            isEndless,
+            date: new Date().toLocaleDateString(),
+          })
+        })
       }
       if (timerId) {
         clearTimeout(timerId)
@@ -110,15 +126,33 @@ const Game = () => {
       setCircleWidth(100)
       setLevel(1)
     }
+    // We need to disable eslint here because we should not rely on isEndless value
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameTime, gameTimerId, isGameStarted, score, timerId])
+
+  const gesture = useMemo(
+    () =>
+      Gesture.Tap()
+        .onBegin(() => {
+          pressed.value = true
+          offsetTop.value = Math.floor(Math.random() * (height - 200))
+          offsetLeft.value = Math.floor(Math.random() * (width - 100))
+        })
+        .onFinalize(() => {
+          pressed.value = false
+        }),
+    [height, offsetLeft, offsetTop, pressed, width],
+  )
 
   return (
     <SafeAreaView style={styles.background}>
       {isGameStarted ? (
-        <Animated.View
-          onTouchStart={onCircleClickHandler}
-          style={[styles.circle, animatedStyles]}
-        />
+        <GestureDetector gesture={gesture}>
+          <Animated.View
+            onTouchEnd={onTouchHandler}
+            style={[styles.circle, animatedStyles]}
+          />
+        </GestureDetector>
       ) : (
         <View style={styles.container}>
           <Text onPress={start} style={styles.startButton}>
