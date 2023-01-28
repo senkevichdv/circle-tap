@@ -22,6 +22,7 @@ const ScoreSchema = {
 
 const {RealmProvider, useRealm, useQuery} = createRealmContext({
   schema: [ScoreSchema],
+  deleteRealmIfMigrationNeeded: true,
 })
 
 export {RealmProvider, useRealm, useQuery, ScoreSchema}

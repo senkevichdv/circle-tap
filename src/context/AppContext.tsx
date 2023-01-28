@@ -2,9 +2,9 @@ import {createContext} from 'react'
 
 interface IContext {
   isEndless: boolean
-  isSizeChange: boolean
+  isShrinking: boolean
   setIsEndless: (value: boolean) => void
-  setIsSizeChange: (value: boolean) => void
+  setIsShrinking: (value: boolean) => void
   isGameStarted: boolean
   startGame: () => void
   stopGame: () => void
@@ -16,8 +16,8 @@ export const initialState: IContext = {
   stopGame: () => {},
   setIsEndless: () => {},
   isEndless: true,
-  setIsSizeChange: () => {},
-  isSizeChange: true,
+  setIsShrinking: () => {},
+  isShrinking: true,
 }
 
 export const AppContext = createContext(initialState)

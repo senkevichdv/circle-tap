@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
-import {Button} from 'react-native'
+import {Icon} from '@rneui/themed'
 
 import {AppContext} from './context/AppContext'
 import Game from './screens/Game'
@@ -15,7 +15,7 @@ const Stack = createStackNavigator()
 const App = () => {
   const [isGameStarted, setIsGameStarted] = useState(false)
   const [isEndless, setIsEndless] = useState<boolean>(true)
-  const [isSizeChange, setIsSizeChange] = useState<boolean>(true)
+  const [isShrinking, setIsShrinking] = useState<boolean>(true)
   const startGame = () => setIsGameStarted(true)
   const stopGame = () => setIsGameStarted(false)
   const contextProviderValue = {
@@ -24,8 +24,8 @@ const App = () => {
     stopGame,
     isEndless,
     setIsEndless,
-    isSizeChange,
-    setIsSizeChange,
+    isShrinking,
+    setIsShrinking,
   }
   return (
     <RealmProvider>
@@ -44,15 +44,23 @@ const App = () => {
                 title: '',
                 headerRight: () =>
                   !isGameStarted ? (
-                    <Button
+                    <Icon
+                      type="material"
+                      name="settings"
+                      size={24}
                       color={shared.color}
                       onPress={() => navigation.navigate('Settings')}
-                      title="Settings"
                     />
                   ) : null,
                 headerLeft: () =>
-                  isGameStarted && isEndless ? (
-                    <Button color={shared.color} onPress={stopGame} title="✕" />
+                  isGameStarted ? (
+                    <Icon
+                      type="material"
+                      name="close"
+                      size={24}
+                      color={shared.color}
+                      onPress={stopGame}
+                    />
                   ) : null,
               })}
             />

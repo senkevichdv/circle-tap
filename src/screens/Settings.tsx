@@ -7,7 +7,7 @@ import styles from './Settings.styles'
 import {useQuery, IScore} from '../realm'
 
 const Settings = () => {
-  const {setIsEndless, isEndless, setIsSizeChange, isSizeChange} =
+  const {setIsEndless, isEndless, setIsShrinking, isShrinking} =
     React.useContext(AppContext)
 
   const scores = useQuery<IScore>('Score').sorted('score', true)
@@ -20,11 +20,11 @@ const Settings = () => {
           <Switch onValueChange={setIsEndless} value={isEndless} />
         </View>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionText}>Reduce circle size</Text>
-          <Switch onValueChange={setIsSizeChange} value={isSizeChange} />
+          <Text style={styles.sectionText}>Shrinking mode</Text>
+          <Switch onValueChange={setIsShrinking} value={isShrinking} />
         </View>
       </View>
-      <Text style={styles.sectionTitle}>Leaderboard</Text>
+      <Text style={styles.sectionTitle}>Previous results</Text>
       <ScrollView style={styles.settingsContainer}>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionText}>Date</Text>

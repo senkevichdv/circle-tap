@@ -14,6 +14,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     alignItems: 'center',
+    padding: 30,
+  },
+  helpText: {
+    textAlign: 'center',
+    marginTop: 20,
   },
   startButton: {
     fontSize: 22,

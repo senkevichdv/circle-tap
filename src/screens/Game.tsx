@@ -1,15 +1,11 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import Animated, {
-  // useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated'
-import {
-  Gesture,
-  GestureDetector,
-  // TapGestureHandler,
-} from 'react-native-gesture-handler'
+import {Gesture, GestureDetector} from 'react-native-gesture-handler'
+import {Icon} from '@rneui/themed'
 import {
   SafeAreaView,
   Text,
@@ -22,11 +18,12 @@ import {AppContext} from '../context/AppContext'
 import {useRealm} from '../realm'
 
 import styles from './Game.styles'
+import shared from '../styles/shared'
 
 const GAME_TIME = 10000
 
 const Game = () => {
-  const {startGame, stopGame, isGameStarted, isSizeChange, isEndless} =
+  const {startGame, stopGame, isGameStarted, isShrinking, isEndless} =
     React.useContext(AppContext)
   const {height, width} = useWindowDimensions()
   const [score, setScore] = useState<number>(0)
@@ -67,14 +64,14 @@ const Game = () => {
   }, [score])
 
   useEffect(() => {
-    if (isSizeChange && isGameStarted) {
+    if (isShrinking && isGameStarted) {
       const interval = setInterval(() => {
         setCircleWidth(w => w - level)
       }, 100)
 
       return () => clearInterval(interval)
     }
-  }, [isSizeChange, isGameStarted, level])
+  }, [isShrinking, isGameStarted, level])
 
   useEffect(() => {
     if (circleWidth < 3) {
@@ -155,9 +152,24 @@ const Game = () => {
         </GestureDetector>
       ) : (
         <View style={styles.container}>
-          <Text onPress={start} style={styles.startButton}>
-            Start
-          </Text>
+          <Icon
+            type="material"
+            name="play-circle-outline"
+            onPress={start}
+            size={120}
+            color={shared.color}
+          />
+          {isEndless && isShrinking && (
+            <Text>"Shrinking Circle Challenge" is enabled!</Text>
+          )}
+          {isEndless && isShrinking && (
+            <Text style={styles.helpText}>
+              "Shrinking Circle Challenge" is a game mode where players must tap
+              as many circles as possible before they shrink to nothing. The
+              circles start out large and gradually decrease in size over time,
+              adding an element of urgency to the gameplay.
+            </Text>
+          )}
           <View style={styles.statsContainer}>
             <Text style={styles.scoreText}>Last score: {score}</Text>
             <Text style={styles.scoreText}>
