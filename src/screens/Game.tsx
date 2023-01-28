@@ -160,7 +160,9 @@ const Game = () => {
             color={shared.color}
           />
           {isEndless && isShrinking && (
-            <Text>"Shrinking Circle Challenge" is enabled!</Text>
+            <Text style={styles.helpText}>
+              "Shrinking Circle Challenge" is enabled!
+            </Text>
           )}
           {isEndless && isShrinking && (
             <Text style={styles.helpText}>

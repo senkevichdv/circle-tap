@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   helpText: {
+    color: shared.color,
     textAlign: 'center',
     marginTop: 20,
   },
